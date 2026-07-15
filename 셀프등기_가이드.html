@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>셀프등기 진행 가이드</title>
+<style>
+  :root {
+    --paper: #EDEFEE;
+    --surface: #FFFFFF;
+    --surface-2: #F5F6F5;
+    --ink: #1C2430;
+    --ink-muted: #5B6472;
+    --ink-faint: #8A93A0;
+    --rule: #D8DBD7;
+    --seal: #9A2B2E;
+    --seal-soft: #F3E4E2;
+    --seal-ink: #7A1F22;
+    --ledger: #26436B;
+    --ledger-soft: #E4EAF1;
+    --shadow: 0 1px 2px rgba(28, 36, 48, 0.06), 0 6px 16px rgba(28, 36, 48, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #14171C;
+      --surface: #1B1F26;
+      --surface-2: #20242C;
+      --ink: #E9EAEA;
+      --ink-muted: #97A0AC;
+      --ink-faint: #6B7280;
+      --rule: #2B303A;
+      --seal: #E2726B;
+      --seal-soft: #3A2427;
+      --seal-ink: #F0958E;
+      --ledger: #7FA0D6;
+      --ledger-soft: #202B3A;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 20px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14171C;
+    --surface: #1B1F26;
+    --surface-2: #20242C;
+    --ink: #E9EAEA;
+    --ink-muted: #97A0AC;
+    --ink-faint: #6B7280;
+    --rule: #2B303A;
+    --seal: #E2726B;
+    --seal-soft: #3A2427;
+    --seal-ink: #F0958E;
+    --ledger: #7FA0D6;
+    --ledger-soft: #202B3A;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 20px rgba(0, 0, 0, 0.35);
+  }
+  :root[data-theme="light"] {
+    --paper: #EDEFEE;
+    --surface: #FFFFFF;
+    --surface-2: #F5F6F5;
+    --ink: #1C2430;
+    --ink-muted: #5B6472;
+    --ink-faint: #8A93A0;
+    --rule: #D8DBD7;
+    --seal: #9A2B2E;
+    --seal-soft: #F3E4E2;
+    --seal-ink: #7A1F22;
+    --ledger: #26436B;
+    --ledger-soft: #E4EAF1;
+    --shadow: 0 1px 2px rgba(28, 36, 48, 0.06), 0 6px 16px rgba(28, 36, 48, 0.05);
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+      'Apple SD Gothic Neo', 'Malgun Gothic', 'Segoe UI', sans-serif;
+    font-feature-settings: "tnum" 1;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+    width: 100%;
+  }
+
+  /* ---------- Header ---------- */
+
+  header.masthead {
+    margin-bottom: 40px;
+  }
+
+  .eyebrow {
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--seal);
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 16px;
+    color: var(--ink-muted);
+    margin: 0 0 24px;
+    max-width: 46em;
+  }
+
+  .receipt {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .receipt-cell {
+    flex: 1;
+    padding: 14px 18px;
+    border-right: 1px dashed var(--rule);
+  }
+  .receipt-cell:last-child { border-right: none; }
+
+  .receipt-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+
+  .receipt-value {
+    font-size: 18px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .receipt-value.progress-value { color: var(--seal); }
+
+  .progress-track {
+    height: 4px;
+    background: var(--rule);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--seal);
+    border-radius: 999px;
+    transition: width 0.25s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .progress-fill { transition: none; }
+  }
+
+  /* ---------- Timeline ---------- */
+
+  .timeline {
+    position: relative;
+    margin-top: 44px;
+    padding-left: 60px;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 21px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--rule);
+  }
+
+  .step {
+    position: relative;
+    margin-bottom: 40px;
+  }
+  .step:last-child { margin-bottom: 0; }
+
+  .step-marker {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--ledger);
+    color: var(--ledger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .step-marker { transition: none; }
+  }
+
+  .step-marker.complete {
+    background: var(--seal);
+    border-color: var(--seal);
+    color: var(--surface);
+  }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 22px 24px 24px;
+  }
+
+  .step-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+
+  .step-title {
+    font-size: 19px;
+    font-weight: 800;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .step-place {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ledger);
+    background: var(--ledger-soft);
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .step-body {
+    color: var(--ink);
+    font-size: 15px;
+  }
+
+  .step-body p { margin: 10px 0; }
+
+  .step-body a {
+    color: var(--seal-ink);
+    text-decoration-color: var(--seal-soft);
+    text-underline-offset: 2px;
+    overflow-wrap: break-word;
+    word-break: break-all;
+  }
+  .step-body a:hover { text-decoration-color: currentColor; }
+  .step-body a:focus-visible {
+    outline: 2px solid var(--seal);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .callout {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: var(--seal-soft);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    margin: 12px 0;
+  }
+  .callout strong { color: var(--seal-ink); }
+
+  .note {
+    font-size: 13.5px;
+    color: var(--ink-muted);
+    border-left: 2px solid var(--rule);
+    padding-left: 10px;
+    margin: 12px 0;
+  }
+
+  ol.procedure {
+    margin: 12px 0;
+    padding-left: 1.3em;
+  }
+  ol.procedure li {
+    margin: 6px 0;
+    padding-left: 4px;
+  }
+  ol.procedure li::marker {
+    font-weight: 700;
+    color: var(--ledger);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sublist-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    letter-spacing: 0.02em;
+    margin: 18px 0 8px;
+  }
+
+  ul.checklist {
+    list-style: none;
+    margin: 0 0 4px;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  ul.checklist li {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  ul.checklist label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 2px;
+    cursor: pointer;
+    font-size: 14.5px;
+  }
+
+  ul.checklist input[type="checkbox"] {
+    accent-color: var(--seal);
+    width: 17px;
+    height: 17px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  ul.checklist .item-text {
+    flex: 1;
+  }
+
+  ul.checklist input:checked ~ .item-text {
+    color: var(--ink-faint);
+    text-decoration: line-through;
+    text-decoration-color: var(--ink-faint);
+  }
+
+  .money-strip {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin: 12px 0 4px;
+  }
+  .money-item {
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 10px 14px;
+    min-width: 130px;
+  }
+  .money-label {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-bottom: 3px;
+  }
+  .money-value {
+    font-family: ui-monospace, 'SF Mono', Consolas, 'Cascadia Mono', monospace;
+    font-size: 15px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .attachment {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--seal-ink);
+    text-decoration: none;
+    background: var(--surface-2);
+    border: 1px dashed var(--rule);
+    border-radius: 6px;
+    padding: 5px 10px;
+    margin-top: 6px;
+    cursor: pointer;
+  }
+  .attachment:hover {
+    border-color: var(--seal);
+    background: var(--seal-soft);
+  }
+  .attachment:focus-visible {
+    outline: 2px solid var(--seal);
+    outline-offset: 2px;
+  }
+
+  footer.colophon {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-size: 12.5px;
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 520px) {
+    .page { padding: 28px 14px 64px; }
+    h1 { font-size: 24px; }
+    .lede { font-size: 14.5px; }
+    .timeline { margin-top: 32px; padding-left: 40px; }
+    .timeline::before { left: 13px; }
+    .step { margin-bottom: 28px; }
+    .step-marker { left: -40px; width: 30px; height: 30px; font-size: 13px; }
+    .step-card { padding: 16px 14px 18px; border-radius: 10px; }
+    .step-title { font-size: 17px; }
+    .step-body { font-size: 14px; }
+    .step-head { gap: 8px; }
+    .receipt { flex-direction: column; }
+    .receipt-cell { padding: 12px 14px; border-right: none; border-bottom: 1px dashed var(--rule); }
+    .receipt-cell:last-child { border-bottom: none; }
+    .money-strip { gap: 10px; }
+    .money-item { min-width: 0; flex: 1 1 128px; padding: 9px 12px; }
+    ul.checklist label { padding: 10px 2px; gap: 9px; }
+    ul.checklist input[type="checkbox"] { width: 19px; height: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">부동산 매매 · 셀프등기 실행 노트</p>
+    <h1>아파트 소유권이전등기, 셀프로 끝내기</h1>
+    <p class="lede">
+      서류 준비부터 서울중앙지방법원 등기국 접수까지, 하루 동안 도는 순서 그대로 정리했다.
+      각 단계는 실제로 방문하는 장소 순서와 같다 — 부동산 → 구청 → 은행 → 우체국 → 등기소.
+    </p>
+
+    <div class="receipt">
+      <div class="receipt-cell">
+        <div class="receipt-label">전체 단계</div>
+        <div class="receipt-value">6단계</div>
+      </div>
+      <div class="receipt-cell">
+        <div class="receipt-label">방문 장소</div>
+        <div class="receipt-value">5곳</div>
+      </div>
+      <div class="receipt-cell" style="flex: 1.4;">
+        <div class="receipt-label">체크리스트 진행</div>
+        <div class="receipt-value progress-value"><span id="progress-text">0 / 0</span></div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="timeline" id="timeline">
+
+    <!-- STEP 1 -->
+    <section class="step" data-step>
+      <div class="step-marker">1</div>
+      <div class="step-card">
+        <div class="step-head">
+          <h2 class="step-title">서류 준비</h2>
+          <span class="step-place">정부24 · 인터넷등기소</span>
+        </div>
+        <div class="step-body">
+          <p>
+            정부24 서류 준비 방법: <a href="https://blog.naver.com/som_bee/224325773596" target="_blank" rel="noopener noreferrer">blog.naver.com/som_bee/224325773596</a><br>
+            인터넷등기소 서류(소유권이전등기신청서, 위임장) 준비 방법: <a href="https://blog.naver.com/som_bee/224325841243" target="_blank" rel="noopener noreferrer">blog.naver.com/som_bee/224325841243</a>
+          </p>
+
+          <p class="sublist-title">매수인 준비 서류</p>
+          <ul class="checklist">
+            <li><label><input type="checkbox" data-persist><span class="item-text">매매계약서 3부 (원본 1부, 사본 2부)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">부동산거래신고 필증 3부 (1부는 예비용)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">주민등록등본 1부</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">주민등록초본 1부</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">가족관계증명서(상세) 1부</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">토지대장(대지권등록부) 1부</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">건축물대장(전유부) 1부</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">토지거래계약 허가서 2부</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">소유권이전등기신청서 1부 (인터넷등기소에서 미리 작성 후 출력)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">위임장 1부 (인터넷등기소에서 미리 작성 후 출력)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">국민주택채권 매입액 미리 조회 후 사진 찍어두기 (은행에서 필요) — <a href="https://nhuf.molit.go.kr/" target="_blank" rel="noopener noreferrer">nhuf.molit.go.kr</a>, 조회 방법: <a href="https://blog.naver.com/som_bee/224325792726" target="_blank" rel="noopener noreferrer">blog.naver.com/som_bee/224325792726</a></span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">국민주택채권·전자수입인지(15만원) 납부할 현금 뽑아두기 (현금만 가능)</span></label></li>
+          </ul>
+
+          <p class="sublist-title">매도인에게 요청할 서류</p>
+          <ul class="checklist">
+            <li><label><input type="checkbox" data-persist><span class="item-text">등기권리증 (등기필정보 및 등기완료통지서 맨 앞장의 일련번호·비밀번호 필요)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">매도용 인감증명서</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">주민등록초본</span></label></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="step" data-step>
+      <div class="step-marker">2</div>
+      <div class="step-card">
+        <div class="step-head">
+          <h2 class="step-title">부동산에서 잔금</h2>
+          <span class="step-place">공인중개사무소</span>
+        </div>
+        <div class="step-body">
+          <ol class="procedure">
+            <li>서류 확인 — 등기권리증, 매도용 인감증명서, 주민등록초본</li>
+            <li>
+              위임장에 인감도장 받기
+              <div class="callout"><strong>간인 필수</strong> — 위임장이 두 장 이상이면 반드시 간인!</div>
+              미리 출력해온 위임장(인터넷등기소 작성본)에 매도인 인감을 받고, 빈 위임장에도 인감을 하나 더 받아둔다 (예비용).
+              <a class="attachment" href="data:application/x-hwp;base64,0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAAAgAAAAAAAAAAEAAABgAAAAEAAAD+////AAAAAAMAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9/////v///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////1IAbwBvAHQAIABFAG4AdAByAHkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAUA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUgBvAG8AdAAgAEUAbgB0AHIAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABYABQD//////////wEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACb9i21+2wEHAAAAAB0AAAAAAABGAGkAbABlAEgAZQBhAGQAZQByAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFgACAQQAAAACAAAA/////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGMAAAAAAQAAAAAAAAUASAB3AHAAUwB1AG0AbQBhAHIAeQBJAG4AZgBvAHIAbQBhAHQAaQBvAG4AAAAAAAAAAAAAAAAAAAAAAAAAAAAuAAIB////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWgAAAAUCAAAAAAAARABvAGMASQBuAGYAbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAgD///////////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCAAAAzwUAAAAAAAD//////////wQAAAD9////BQAAABAAAAD+////CAAAAAkAAAAKAAAACwAAAAwAAAANAAAADgAAAA8AAAARAAAA/v///xIAAAATAAAAFAAAABUAAAAWAAAA/v///xgAAAAZAAAAGgAAABsAAAAcAAAAHQAAAB4AAAAfAAAA/v///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////0IAbwBkAHkAVABlAHgAdAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASAAEABgAAAAUAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgn/uLbX7bAYDt+4ttftsBAAAAAAAAAAAAAAAAUAByAHYASQBtAGEAZwBlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIAAgH/////BwAAAP////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAQQgAAAAAAABQAHIAdgBUAGUAeAB0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAACAQMAAAAIAAAA/////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8BwAAAAAAAEQAbwBjAE8AcAB0AGkAbwBuAHMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAEA//////////8LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJv2LbX7bAQAm/YttftsBAAAAAAAAAAAAAAAAUwBjAHIAaQBwAHQAcwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAQD//////////wkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAm/YttftsBACb9i21+2wEAAAAAAAAAAAAAAABKAFMAYwByAGkAcAB0AFYAZQByAHMAaQBvAG4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgACAQoAAAD//////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoAAAANAAAAAAAAAEQAZQBmAGEAdQBsAHQASgBTAGMAcgBpAHAAdAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAAIA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZwAAAIgAAAAAAAAAXwBMAGkAbgBrAEQAbwBjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIAAgH///////////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABrAAAADAIAAAAAAAABAAAAAgAAAAMAAAAEAAAABQAAAAYAAAAHAAAACAAAAAkAAAAKAAAACwAAAAwAAAANAAAADgAAAA8AAAAQAAAAEQAAABIAAAATAAAAFAAAABUAAAAWAAAAFwAAABgAAAAZAAAAGgAAABsAAAAcAAAAHQAAAB4AAAAfAAAA/v///yEAAAAiAAAAIwAAACQAAAAlAAAAJgAAACcAAAAoAAAAKQAAACoAAAArAAAALAAAAC0AAAAuAAAALwAAADAAAAAxAAAAMgAAADMAAAA0AAAANQAAADYAAAA3AAAAOAAAADkAAAA6AAAAOwAAADwAAAA9AAAAPgAAAD8AAABAAAAAQQAAAP7///9DAAAARAAAAEUAAABGAAAARwAAAEgAAABJAAAASgAAAEsAAABMAAAATQAAAE4AAABPAAAAUAAAAFEAAABSAAAAUwAAAFQAAABVAAAAVgAAAFcAAABYAAAAWQAAAP7///9bAAAAXAAAAF0AAABeAAAAXwAAAGAAAABhAAAAYgAAAP7///9kAAAAZQAAAGYAAAD+////aAAAAGkAAAD+/////v///2wAAABtAAAAbgAAAG8AAABwAAAAcQAAAHIAAABzAAAA/v///////////////////////////////////////////////////////////////////w0ACgA8AATHIAAgACAAIAAgACAAIAAgACAAIACExyAAIAAgACAAIAAgACAAIAAgACAApcc+AA0ACgA8AIC9IADZsyAAsMAgAFjHIABc1CAA3MI+ADwAPgANAAoAPAAgACAA8bQwrtDGeMf8rCAA+K0gAPDF1MZ8xz4APAAgACAAIAAgACAAIAAgACAARLEgACAAIAAgANTGIAAgACAAIAB8xyAAIAA+AA0ACgA8ACAAIADxtCAAMK4gAFjHIACpuiAAAcg+ADwAPgANAAoAPAAgAD4APAA+AA0ACgA8AACzIACsuSAAeMc+ADwAIAAgAD4ADQAKADwAIAAgAATHIACswIy3RMcgAACzrLl4xzzHXLggABXIWNXgrCAABMcgAIC92bOwwCAA8bQwruDCrcwgAA+8IADozVjV0MUgAACtXNUgAKi64LQgAIytXNVExyAABMeEx1zV5LIuACAAELZc1SAA9bwAs6y5eMcgACDBhMdExyAAyNV9t1zV5LIuACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgAESxIAAgACAAIAAgANTGIAAgACAAIAAgAHzHPgANAAoAPAAExyAAhMcgAHjHPgA8AD4APACgsCAAeMc+ADwAPgANAAoAOyAgALe0dLpYxyAAMK6sx5TGObhExyAAfcfgrCAAkccxwVjV7MUgAPzI3MIwriAAFLyNt8iy5LIuAA0ACgANAAoAPAAExyAAIAAgACAAIAAgACAAIAAgACAAhMcgACAAIAAgACAAIAAgACAAIAAgAKXHPgANAAoAPABgJCAAgL0gANmzIACwwCAAWMcgAFzUIADcwj4APAAgADEALgAgABzBuMa50sS83MIgABzBCM1srSAAHMEIzdmzIAAxADAAMAAgACAAIAAgACAAIAAgAACzIAAxADAAMABtALIAIAAgADIALgAgABzBuMa50sS83MIgABzBCM1srSAAHMEIzdmzIAAxADAAMAAgACAAIAAgACAAWwDEs1y4hbr8yIzBXQAgABzBuMa50sS83MIgABzBCM1srSAAHMEIzQCzXLg4ADgAOK4gADEAMAAgACAAIAAgACAAIAAgANzCWLq40iAAvbzMs3DIIACswpi3DL7AyZW9IAAyADXOIAD8yN3QIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAxADXOIAAxADAAMABtALIAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAyADXOIAAxADAAMABtALIAIAB0xyAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIADBwD4ADQAKADwAIABhJCAA8bQwrtDGeMf8rCAA+K0gAPDF1MZ8xz4APAAgADIAMAAyADUARLEgACAAMwDUxiAAIAA0AHzHIAAgAOS55Lk+AA0ACgA8ACAAYiQgAPG0IAAwriAAWMcgAKm6IAAByD4APAAgAIzBIMeMrXTHBMg+AA0ACgA8ACAAYyQgAHTHIAAEyCAAYNUgAMDJIACEvT4APAA+AA0ACgA8AGQkIAAAsyAArLkgAHjHPgA8ACAAIAAgAECuIAAgACAAEawgACAAIADMsyAAIAAgACAAHMG4xrnSxLzcwiAAEclsrSAA5LLZsziuIAA5ADYAKADkstmzKQA+AA0ACgA8ACAAIAAExyAArMCMt0THIAAAs6y5eMc8x1y4IAAVyFjV4KwgAATHIACAvdmzsMAgAPG0MK7gwq3MIAAPvCAA6M1Y1dDFIAAArVzVIACouuC0IACMrVzVRMcgAATHhMdc1eSyLgAgABC2XNUgAPW8ALOsuXjHIAAgwYTHRMcgAMjVfbdc1eSyLgAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIABlJCAAIAAyADAAMgA1AESxIAAgADMA1MYgACAANAB8xz4ADQAKADwAZiQgAATHIACExyAAeMc+ADwAIAAgACAAdMcgACAAALMgACAAMbwgACAAIAAcwbjGudLEvNzCIAAcwQjNbK0gABzBCM0As1y4OAA4ADiuIAAxADAAKAAcwQjN2bMpACAAIAAgACAATdYgACAAOK4gACAA2bMgACAAIAAcwbjGudLEvNzCIAAcwQjNbK0gABzBCM0As1y4OAA4ADiuIAAyADAALAAgACAAIAAxADAAMQDZsyAAMQAwADEAONYoABzBCM3ZsywAIAAcwQjNRMUM07jSKQA+ADwAoLAgAHjHPgA8AD4ADQAKADwA8bQwruDCrcxIxbSwHMEgAC0AIAAEx4THpcc+AA0ACgANAAoAoyUgAATHhMelxyAAMK6sx5TGObgNAAoAIAAgACAAOyAgAACzgL2EvVjHIAAwrqzHrMBt1UDHIADxtDCu4MKtzBzBWMcgADCurMeUxjm4/KwgABmstcLIsuSyLgANAAoADQAKACAAIAAgACAAYCQgAIC92bOwwFjHIABc1NzCgLcNAAoAIAAgACAAIABhJCAA8bQwrtDGeMf8rCAA+K0gAPDF1MZ8xw0ACgAgACAAIAAgAGIkIADxtDCuWMcgAKm6AciAtw0ACgAgACAAIAAgAGMkIAD1rIC30MUgADCurMdg1SAArMBt1Q0ACgAgACAAIAAgACAAIAAgAGAkIAB+ACAAYySAtyAAMK6sx6zAbdVAxyAA8bQAAAAAR0lGODlhsQD6APcAAAAAAIAAAACAAICAAAAAgIAAgACAgMDAwP7+/vHx8eTk5NbW1snJybu7u66urqGhoZOTk4aGhnh4eGtra11dXVBQUENDQzU1NSgoKBoaGg0NDQEBAfjMyPiwsPiYmPiAgPhkYPhMSPgwMPgYGPgAAOAAAMgAALAAAJgAAIEAAGAAAEgAAPjkyPjYsPjMmPi8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" download="위임장.hwp">📎 위임장.hwp 다운로드</a>
+            </li>
+            <li>잔금 입금 — 입금 후 부동산에서 <strong>영수증</strong> 꼭 받기!</li>
+            <li>부동산 중개수수료 지급</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="step" data-step>
+      <div class="step-marker">3</div>
+      <div class="step-card">
+        <div class="step-head">
+          <h2 class="step-title">취득세 고지서 발급</h2>
+          <span class="step-place">관악구청</span>
+        </div>
+        <div class="step-body">
+          <div class="note">참고: 임대사업자는 생애최초 감면 불가능</div>
+
+          <p class="sublist-title">필요 서류</p>
+          <ul class="checklist">
+            <li><label><input type="checkbox" data-persist><span class="item-text">매매계약서 사본 1부</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">잔금 영수증</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">가족관계증명서 1부</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">부동산거래신고필증 1부</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">매수인 주민등록등본 1부</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">매수인 신분증</span></label></li>
+          </ul>
+
+          <ol class="procedure">
+            <li>서류 작성 — 취득세 신고서, 주택 취득 상세 명세서</li>
+            <li>필요 서류 및 작성한 서류 들고 접수</li>
+            <li>취득세 고지서 받기</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="step" data-step>
+      <div class="step-marker">4</div>
+      <div class="step-card">
+        <div class="step-head">
+          <h2 class="step-title">채권 매입 · 인지 · 취득세 납부</h2>
+          <span class="step-place">우리은행 (관악구청 지하1층)</span>
+        </div>
+        <div class="step-body">
+          <div class="money-strip">
+            <div class="money-item">
+              <div class="money-label">국민주택채권 매입액</div>
+              <div class="money-value">집마다 상이</div>
+            </div>
+            <div class="money-item">
+              <div class="money-label">전자수입인지</div>
+              <div class="money-value">150,000원</div>
+            </div>
+          </div>
+          <p class="note">전자수입인지는 매입금액 1억 초과 ~ 10억 이하 구간이라 15만원으로 동일. 국민주택채권 매입액은 은행 가기 전 미리 조회해둘 것.</p>
+
+          <ol class="procedure">
+            <li>현금 미리 뽑아두기</li>
+            <li>창구에서 "국민주택채권 매입(바로 매도), 전자수입인지 납부하러 왔다"고 말하기</li>
+            <li>납부 후 국민주택채권 매입확인서, 전자수입인지 증서 받기</li>
+            <li>우리은행 내 공과금 납부기에서 취득세 고지서로 취득세 납부</li>
+            <li>취득세 영수증 들고 창구로 돌아가면 고지서에 납부 확인 도장을 찍어줌</li>
+          </ol>
+
+          <p class="sublist-title">최종 받아야 할 서류</p>
+          <ul class="checklist">
+            <li><label><input type="checkbox" data-persist><span class="item-text">국민주택채권 매입확인서</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">전자수입인지 증서</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">취득세 영수필 확인서 (고지서에 도장받은 것)</span></label></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="step" data-step>
+      <div class="step-marker">5</div>
+      <div class="step-card">
+        <div class="step-head">
+          <h2 class="step-title">대봉투·등기 우표 구매</h2>
+          <span class="step-place">우체국 (대법원 내)</span>
+        </div>
+        <div class="step-body">
+          <p>서울중앙지방법원 등기국 앞, 대법원 안 우체국에서 구매 가능.</p>
+          <div class="money-strip">
+            <div class="money-item">
+              <div class="money-label">대봉투 (현금만)</div>
+              <div class="money-value">150원</div>
+            </div>
+            <div class="money-item">
+              <div class="money-label">등기 우표</div>
+              <div class="money-value">4,800원</div>
+            </div>
+          </div>
+          <p>대봉투에 받는 사람 주소·연락처를 적고, 구매한 우표를 붙여둔다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="step" data-step>
+      <div class="step-marker">6</div>
+      <div class="step-card">
+        <div class="step-head">
+          <h2 class="step-title">등기소 접수</h2>
+          <span class="step-place">서울중앙지방법원 등기국</span>
+        </div>
+        <div class="step-body">
+          <p class="sublist-title">제출 서류 (제출 전 최종 확인)</p>
+          <ul class="checklist">
+            <li><label><input type="checkbox" data-persist><span class="item-text">등기 신청서 (인터넷등기소 작성 후 출력)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">취득세 납부확인서 (은행 도장)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">국민주택채권매입 확인증</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">위임장 (매도인 인감 날인분)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">매도인 인감증명서</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">매도인 주민등록초본</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">매수인 주민등록초본</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">토지대장(대지권등록부)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">건축물대장(전유부)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">매매계약서 원본</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">부동산거래계약신고필증</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">정부수입인지 증명서 (은행에서 받은 것)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">등기권리증 (매도인이 준 것)</span></label></li>
+            <li><label><input type="checkbox" data-persist><span class="item-text">신분증, 매수인 도장</span></label></li>
+          </ul>
+
+          <ol class="procedure">
+            <li>
+              왼쪽 무인발급실에서 등기신청수수료 납부 — 인터넷등기소 출력물 지참, <strong>15,000원</strong>.
+              영수증과 함께 나오는 서류 한 장까지 챙길 것.
+            </li>
+            <li>
+              오른쪽 접수처 앞 상담실에서 서류 확인받기 — 채권 발행번호(채권매입확인서),
+              등기필정보의 일련번호·비밀번호, 위임장 대리인정보란에 본인 주민번호 기재.
+            </li>
+            <li>접수처에서 서류 제출 — 우편으로 받고 싶으면 우체국에서 산 대봉투를 함께 제출.</li>
+            <li>등기신청 끝! 접수 완료되면 카카오톡으로 알림이 온다.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="colophon">
+    개인 참고용 셀프등기 정리 노트 · 관악구 / 서울중앙지방법원 등기국 기준 · 체크한 항목은 이 브라우저에 자동 저장됩니다.
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var STORAGE_KEY = 'selfgeungi-checklist-v1';
+    var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-persist]'));
+    boxes.forEach(function (box, i) { box.dataset.id = 'chk-' + i; });
+
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) {}
+
+    boxes.forEach(function (box) {
+      if (saved[box.dataset.id]) box.checked = true;
+    });
+
+    function persist() {
+      var state = {};
+      boxes.forEach(function (box) { state[box.dataset.id] = box.checked; });
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+
+    function updateProgress() {
+      var total = boxes.length;
+      var done = boxes.filter(function (b) { return b.checked; }).length;
+      document.getElementById('progress-text').textContent = done + ' / ' + total;
+      document.getElementById('progress-fill').style.width = (total ? (done / total * 100) : 0) + '%';
+
+      document.querySelectorAll('[data-step]').forEach(function (step) {
+        var stepBoxes = Array.prototype.slice.call(step.querySelectorAll('input[data-persist]'));
+        var marker = step.querySelector('.step-marker');
+        if (stepBoxes.length === 0) return;
+        var allDone = stepBoxes.every(function (b) { return b.checked; });
+        marker.classList.toggle('complete', allDone);
+      });
+    }
+
+    boxes.forEach(function (box) {
+      box.addEventListener('change', function () {
+        persist();
+        updateProgress();
+      });
+    });
+
+    updateProgress();
+  })();
+</script>
+</body>
+</html>
